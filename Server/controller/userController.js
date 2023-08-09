@@ -1,3 +1,3 @@
 export const getUSers = async (req, resp) => {
-  resp.status(200).json({ Message: "Success" });
+  resp.status(200).json({ Message: "Successd" });
 };
