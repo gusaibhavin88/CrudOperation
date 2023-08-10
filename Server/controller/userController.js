@@ -17,7 +17,6 @@ export const getAllUsers = async (req, resp) => {
 
 export const register = async (req, resp) => {
   const { name, email, mobile, age, work, add, desc } = req.body;
-
   try {
     if (!name || !email || !mobile || !age || !work || !add || !desc) {
       resp
@@ -29,17 +28,9 @@ export const register = async (req, resp) => {
     if (user) {
       resp.status(401).json({ success: false, message: "User already exist" });
     } else {
-      const newUser = new UserModel({
-        name,
-        email,
-        mobile,
-        age,
-        work,
-        add,
-        desc,
-      });
+      const newUser = new UserModel(req.body);
       await newUser.save();
-      resp.status(200).json({ success: true, newUser });
+      resp.status(200).json({ success: true, list: newUser._id });
     }
   } catch (error) {
     resp.status(500).json({ success: false, message: error.message });

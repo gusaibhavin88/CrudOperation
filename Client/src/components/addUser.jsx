@@ -1,14 +1,48 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
+import React from 'react';
+import { useForm } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import { registerUser } from '../API/userRequest';
+import { useMyContext } from './myContext';
+import { useNavigate } from 'react-router-dom';
 
 function AddUser() {
+    const { register, handleSubmit, reset } = useForm();
+    const { rows, setRows } = useMyContext();
+    console.log(rows)
+
+    const navigate = useNavigate()
+
+    const onSubmit = async (data) => {
+        const newData = {
+            ...data, age: parseInt(data.age), mobile: parseInt(data.mobile)
+        }
+        console.log(newData)
+        const response = await registerUser(newData)
+        console.log(response)
+        if (response.data.success === true) {
+            const newItem = { _id: response.data.list, ...newData }
+            const addedUser = rows.push(newItem)
+            console.log(addedUser)
+            setRows(addedUser)
+            reset()
+            console.log("Done")
+            navigate("/")
+
+        } else {
+            alert(response.data.message)
+        }
+    }
+
+
+
     return (
         <div style={{ display: "flex", alignItems: "center", justifyContent: 'center', marginTop: "20px" }}>
             <Box
                 component="form"
+                onSubmit={handleSubmit(onSubmit)}
                 sx={{
                     '& > :not(style)': { m: 1, width: '25ch' },
                 }}
@@ -18,31 +52,57 @@ function AddUser() {
                 <span style={{ fontWeight: "bold", alignSelf: "center", fontSize: "20px" }}>Add User</span>
                 <br />
                 <br />
-                <TextField label="Name" color="secondary" focused />
+                <TextField label="Name" color="secondary" focused name='name' inputProps={register('name')} />
                 <br />
-                <TextField label="Email" color="secondary" focused />
+                <TextField label="Email" color="secondary" focused name='email' inputProps={register('email')} />
+                <br />
+                <TextField
+                    label="Mobile"
+                    color="secondary"
+                    focused
+                    name="mobile"
+                    type="number"  // Use "tel" input type for mobile numbers
+                    inputProps={{
+                        ...register('mobile'),
+                        pattern: '[0-9]*',  // Use a pattern to enforce only numeric input
+                    }}
+                />
 
+                {/* Age Field */}
                 <br />
-                <TextField label="Mobile" color="secondary" focused />
-
+                <TextField
+                    label="Age"
+                    color="secondary"
+                    focused
+                    name="age"
+                    type="number"  // Specify input type as "number"
+                    inputProps={{
+                        ...register('age'),
+                        min: 0,  // Optional: Specify a minimum value
+                    }}
+                />
                 <br />
-                <TextField label="Age" color="secondary" focused />
-
+                <TextField label="Work" color="secondary" focused name='work' inputProps={register('work')} />
                 <br />
-                <TextField label="Work" color="secondary" focused />
+                <TextField label="Address" color="secondary" focused name='add' inputProps={register('add')} />
                 <br />
-                <TextField label="Address" color="secondary" focused />
-                <br />
-                <TextField label="Description" color="secondary" focused />
-                <br />
+                <TextField
+                    focused
+                    color="secondary"
+                    id="outlined-multiline-static"
+                    label="Description"
+                    multiline
+                    rows={4}
+                    variant="outlined"
+                    name='desc'
+                    inputProps={register('desc')}
+                />
                 <Stack spacing={2} direction="row">
-                    <Button variant="contained">Submit</Button>
+                    <Button variant="contained" type='submit'>Submit</Button>
                 </Stack>
-
             </Box>
         </div>
-
     );
 }
 
-export default AddUser
+export default AddUser;

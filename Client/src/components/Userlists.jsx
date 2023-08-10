@@ -11,6 +11,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { deleteUserApi, editUser, getAllUsers } from '../API/userRequest';
 import { useNavigate } from 'react-router-dom';
+import { useMyContext } from './myContext';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -47,8 +48,10 @@ function createData(name, calories, fat, carbs, protein) {
 
 function Userlists() {
     const navigate = useNavigate()
+    const { rows, setRows } = useMyContext();
+    const data = 1
+    console.log(data)
 
-    const [rows, setRows] = useState([])
 
     const getAllUserList = async () => {
         const response = await getAllUsers();
@@ -68,7 +71,7 @@ function Userlists() {
             const updatedRow = rows.filter((item) => item._id !== id)
             setRows(updatedRow)
         } else {
-            alert(response.data.message);
+            console.log(response.data.message);
         }
     }
     const onEditClick = async (id) => {
@@ -84,7 +87,8 @@ function Userlists() {
 
     useEffect(() => {
         getAllUserList();
-    }, []);
+        console.log("first")
+    }, [data]);
 
     return (
         <TableContainer component={Paper}>
