@@ -89,9 +89,11 @@ export const deleteUser = async (req, resp) => {
     const result = await UserModel.deleteOne({ _id: id });
 
     if (result.deletedCount > 0) {
-      resp.status(200).json({ message: "Item deleted successfully" });
+      resp
+        .status(200)
+        .json({ success: true, message: "Item deleted successfully" });
     } else {
-      resp.status(404).json({ message: "Item not found" });
+      resp.status(404).json({ success: false, message: "Item not found" });
     }
   } catch (error) {
     resp.status(500).json({ success: false, message: error.message });
