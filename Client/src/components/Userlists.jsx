@@ -49,14 +49,11 @@ function createData(name, calories, fat, carbs, protein) {
 function Userlists() {
     const navigate = useNavigate()
     const { rows, setRows } = useMyContext();
-    const data = 1
-    console.log(data)
 
 
     const getAllUserList = async () => {
         const response = await getAllUsers();
         if (response.data.success === true) {
-            console.log(response);
             setRows(response.data.users); // Update the state with fetched user data
         } else {
             alert("Error fetching users");
@@ -87,8 +84,7 @@ function Userlists() {
 
     useEffect(() => {
         getAllUserList();
-        console.log("first")
-    }, [data]);
+    }, []);
 
     return (
         <TableContainer component={Paper}>
@@ -96,7 +92,7 @@ function Userlists() {
                 <TableHead>
                     <TableRow>
                         <StyledTableCell>Name</StyledTableCell>
-                        <StyledTableCell align="right">Email</StyledTableCell>
+                        <StyledTableCell align="center">Email</StyledTableCell>
                         <StyledTableCell align="right">Address</StyledTableCell>
                         <StyledTableCell align="right">Age</StyledTableCell>
                         <StyledTableCell align="right">Mobile No</StyledTableCell>
@@ -109,7 +105,7 @@ function Userlists() {
                 <TableBody>
                     {rows.length > 0 ? rows.map((row, index) => (
                         <StyledTableRow key={index}>
-                            <StyledTableCell component="th" scope="row">
+                            <StyledTableCell scope="row">
                                 {row.name}
                             </StyledTableCell>
                             <StyledTableCell align="right">{row.email}</StyledTableCell>

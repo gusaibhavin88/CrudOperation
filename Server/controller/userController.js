@@ -60,11 +60,10 @@ export const updateUser = async (req, resp) => {
       { _id: id }, // Match the item by ID
       { $set: updatedUser } // Update fields with new values
     );
-    console.log(result);
     if (result.modifiedCount > 0) {
       resp
         .status(200)
-        .json({ success: false, message: "Item updated successfully" });
+        .json({ success: true, message: "Item updated successfully" });
     } else {
       resp.status(401).json({ success: true, message: "Item not found" });
     }

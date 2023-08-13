@@ -34,8 +34,10 @@ function ResponsiveAppBar() {
     setAnchorElNav(null);
     if (page === "Add User") {
       navigate("/adduser")
-    }
-  };
+    } else if (page === "All Users") {
+      navigate("/")
+    };
+  }
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
@@ -50,7 +52,7 @@ function ResponsiveAppBar() {
             variant="h6"
             noWrap
             component="a"
-            href="/"
+            onClick={() => navigate("/")}
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -95,7 +97,7 @@ function ResponsiveAppBar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={() => {
-                  handleCloseNavMenu // Make sure to call handleCloseNavMenu as a function
+                  handleCloseNavMenu(page) // Make sure to call handleCloseNavMenu as a function
                 }}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
@@ -133,35 +135,7 @@ function ResponsiveAppBar() {
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+
         </Toolbar>
       </Container>
     </AppBar >

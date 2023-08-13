@@ -24,15 +24,12 @@ function AddUser() {
         console.log(response)
         if (response.data.success === true) {
             const newItem = { _id: response.data.list, ...newData }
-            const addedUser = rows.push(newItem)
-            console.log(addedUser)
-            setRows(addedUser)
-            reset()
-            console.log("Done")
-            navigate("/")
-
+            const updatedRows = [...rows, newItem]; // Create a new array with the updated rows
+            setRows(updatedRows); // Update the rows state with the new array
+            reset();
+            navigate("/"); // Navigate to the Userlists component
         } else {
-            alert(response.data.message)
+            alert(response.data.message);
         }
     }
 
